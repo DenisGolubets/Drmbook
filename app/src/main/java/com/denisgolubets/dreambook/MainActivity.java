@@ -6,15 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denisgolubets.dreambook.util.Utildatabase;
@@ -22,14 +26,16 @@ import com.denisgolubets.dreambook.util.Utildatabase;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements TextWatcher, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener, TextWatcher, View.OnClickListener {
     private Utildatabase sqlHelper;
     private ListView lv;
     private EditText etname;
     private ArrayList<String> words;
     private SimpleCursorAdapter adapter;
     private Cursor cursor;
-    private Button serch;
+    private Button btnSerch, btnClear;
+    private Button Clear;
+    private LinearLayout mLinearLayout;
 
 
     private AutoCompleteTextView edit;
@@ -43,13 +49,27 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, View
 
 
         edit = (AutoCompleteTextView) findViewById(R.id.edit);
+        edit.setOnEditorActionListener(this);
         edit.addTextChangedListener(this);
 
-        serch = (Button) findViewById(R.id.button);
-        serch.setOnClickListener(this);
+
+        btnSerch = (Button) findViewById(R.id.btnSearch);
+        btnSerch.setOnClickListener(this);
+
+
+        btnClear = (Button) findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(this);
+        btnClear.setVisibility(View.INVISIBLE);
 
         sqlHelper = new Utildatabase(this);
         sqlHelper.createDB();
+
+        lv = (ListView) findViewById(R.id.lv);
+
+
+        mLinearLayout = (LinearLayout) findViewById(R.id.linearLayout_focus);
+        // edit.requestFocus();
+
         /*try {
             sqlHelper.openDataBase();
         } catch (SQLException e) {
@@ -65,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, View
     @Override
     protected void onResume() {
         super.onResume();
-        lv = (ListView) findViewById(R.id.lv);
+
 
         edit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -113,6 +133,13 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, View
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (edit.length() > 1) {
+            btnClear.setVisibility(View.VISIBLE);
+
+        }
+        if (edit.length() < 2) {
+            btnClear.setVisibility(View.INVISIBLE);
+        }
         if (edit.getText().length() > 0) {
             String editString = edit.getText().toString();
             if (editString.length() == 1) {
@@ -128,17 +155,39 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, View
 
     }
 
-    private void hideKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(this.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
 
     public void afterTextChanged(Editable s) {
 
     }
 
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(this.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSearch: {
+                sershClick();
+
+            }
+            break;
+            case R.id.btnClear: {
+                edit.setText("");
+
+                edit.requestFocus();
+
+            }
+            break;
+
+
+        }
+
+    }
+
+    private void sershClick() {
         if (edit.getText().length() > 0) {
             String editString = edit.getText().toString();
             if (editString.length() == 1) {
@@ -157,6 +206,18 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, View
             setList();
         }
         hideKeyboard();
+        edit.clearFocus();
+        mLinearLayout.requestFocus();
+    }
 
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+            sershClick();
+            return true;
+        }
+        return false;
     }
 }
