@@ -212,34 +212,6 @@ public class Utildatabase extends SQLiteOpenHelper {
         Log.d(TAG, "copyDataBase - OK");
     }
 
-    // копирование базы из zip
-    private void copyDataBaseFromZipFile() throws IOException {
-        // InputStream is = myContext.getResources().openRawResource(R.raw.drm);
-        InputStream is = myContext.getAssets().open("data.zip");
-        File outFile = new File(DB_PATH, DATABASE_NAME);
-        OutputStream myOutput = new FileOutputStream(outFile.getAbsolutePath());
-        ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
-        try {
-            ZipEntry ze;
-            while ((ze = zis.getNextEntry()) != null) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int count;
-
-                while ((count = zis.read(buffer)) != -1) {
-                    baos.write(buffer, 0, count);
-                }
-                baos.writeTo(myOutput);
-                Log.d(TAG, "copyDataBaseFromZipFile - OK");
-
-            }
-        } finally {
-            zis.close();
-            myOutput.flush();
-            myOutput.close();
-            is.close();
-        }
-    }
 
     // крпипрваеие база из архива
     public void onUnzipZip() throws IOException {

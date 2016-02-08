@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -66,18 +65,8 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
         lv = (ListView) findViewById(R.id.lv);
 
-
         mLinearLayout = (LinearLayout) findViewById(R.id.linearLayout_focus);
-        // edit.requestFocus();
 
-        /*try {
-            sqlHelper.openDataBase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
-
-
-        // edit.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,words));
 
 
     }
@@ -95,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                setList();
+                setListCursorAdapter();
                 hideKeyboard();
 
             }
@@ -103,12 +92,14 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
     }
 
-    private void setList() {
+    private void setListCursorAdapter() {
         String[] headers = new String[]{"dream_name", "file_description"};
         adapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                 cursor, headers, new int[]{android.R.id.text1, android.R.id.text2}, 0);
         lv.setAdapter(adapter);
     }
+
+
 
     @Override
     protected void onPause() {
@@ -170,14 +161,12 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnSearch: {
-                sershClick();
+                searchClick();
 
             }
             break;
             case R.id.btnClear: {
-                edit.setText("");
-
-                edit.requestFocus();
+                clearEditAndLv();
 
             }
             break;
@@ -187,7 +176,15 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
     }
 
-    private void sershClick() {
+    private void clearEditAndLv() {
+        edit.setText("");
+        adapter = null;
+        lv.setAdapter(adapter);
+
+        edit.requestFocus();
+    }
+
+    private void searchClick() {
         if (edit.getText().length() > 0) {
             String editString = edit.getText().toString();
             if (editString.length() == 1) {
@@ -203,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
             }
             String i = String.valueOf(cursor.getCount());
             Toast.makeText(this, i, Toast.LENGTH_SHORT).show();
-            setList();
+            setListCursorAdapter();
         }
         hideKeyboard();
         edit.clearFocus();
@@ -215,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-            sershClick();
+            searchClick();
             return true;
         }
         return false;
