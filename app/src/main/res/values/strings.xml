@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">Dreambook_v0.0.8 Alpha</string>
+    <string name="app_name">Dreambook_Beta_v0.1.5</string>
+    <string name="english">Английский сонник</string>
+    <string name="assyrian">Ассирийский сонник</string>
+    <string name="old_russian">Древнерусский сонник</string>
+    <string name="indian">Индийский сонник</string>
+    <string name="culinary">Кулинарный сонник</string>
+    <string name="love">Любовный сонник</string>
+    <string name="muslim">Мусульманский сонник</string>
+    <string name="persian">Персидский сонник</string>
+    <string name="right">Правильный сонник</string>
+    <string name="slavic">Славянский сонник</string>
+    <string name="azar">Сонник Азара</string>
+    <string name="vanga">Сонник Ванги</string>
+    <string name="kopalinski">Сонник Копалинского</string>
+    <string name="krada_velez">Сонник Крады Велес</string>
+    <string name="lof">Сонник Лоффа</string>
+    <string name="meneghetti">Cонник Менегетти</string>
+    <string name="miller">Сонник Миллера</string>
+    <string name="nostradamus">Сонник Нострадамуса</string>
+    <string name="solomon">Cонник Соломона</string>
+    <string name="freid">Сонник Фрейда</string>
+    <string name="tsvetkov">Сонник Цветкова</string>
+    <string name="hasse">Сонник Хассе</string>
+    <string name="zhou_goun">Cонник Чжоу-Гуна</string>
+    <string name="yuri_long">Cонник Юрия Лонго</string>
+    <string name="ukraine">Украинский сонник</string>
+    <string name="french">Французский сонник</string>
+    <string name="esoteric">Эзотерический сонник</string>
+    <string name="electronic">Электронный сонник</string>
+    <string name="action_settings">Настройки</string>
 </resources>

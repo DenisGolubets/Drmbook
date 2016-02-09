@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="english"
+        android:title="@string/english"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="assyrian"
+        android:title="@string/assyrian"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="old_russian"
+        android:title="@string/old_russian"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="indian"
+        android:title="@string/indian"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="culinary"
+        android:title="@string/culinary"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="love"
+        android:title="@string/love"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="muslim"
+        android:title="@string/muslim"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="persian"
+        android:title="@string/persian"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="right"
+        android:title="@string/right"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="slavic"
+        android:title="@string/slavic"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+    android:key="azar"
+    android:title="@string/azar"
+    android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="vanga"
+        android:title="@string/vanga"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="kopalinski"
+        android:title="@string/kopalinski"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="krada_velez"
+        android:title="@string/krada_velez"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="lof"
+        android:title="@string/lof"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="meneghetti"
+        android:title="@string/meneghetti"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="miller"
+        android:title="@string/miller"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="nostradamus"
+        android:title="@string/nostradamus"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="solomon"
+        android:title="@string/solomon"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="freid"
+        android:title="@string/freid"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="tsvetkov"
+        android:title="@string/tsvetkov"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="hasse"
+        android:title="@string/hasse"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="zhou_goun"
+        android:title="@string/zhou_goun"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="yuri_long"
+        android:title="@string/yuri_long"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="ukraine"
+        android:title="@string/ukraine"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="french"
+        android:title="@string/french"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="esoteric"
+        android:title="@string/esoteric"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="electronic"
+        android:title="@string/electronic"
+        android:defaultValue="true" />
+
+
+
+
+
+</PreferenceScreen>

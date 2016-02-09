@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.denisgolubets.dreambook.MainActivity;
 import com.denisgolubets.dreambook.R;
 
 import java.io.BufferedInputStream;
@@ -20,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -66,10 +68,26 @@ public class Utildatabase extends SQLiteOpenHelper {
         }
 
         cursorFirstQuery = myDataBase.rawQuery(query, null);
+        cursorFirstQuery.moveToFirst();
         return cursorFirstQuery;
     }
 
-    public ArrayList<String> resultWords(String s) {
+    public Cursor secondQuery(String tableName, String s) throws SQLException {
+        Cursor cursorSecondQuery = null;
+        openDataBase();
+        String query = "";
+
+        query += "SELECT _id,dream_name,file_description FROM " + tableName + " where dream_name Like \"" + s + "%\"";
+
+
+        cursorSecondQuery = myDataBase.rawQuery(query, null);
+        cursorSecondQuery.moveToFirst();
+        return cursorSecondQuery;
+    }
+
+
+    public ArrayList<String> resultWords(String s, HashMap<String, Boolean> tablesSearch) {
+        int count =0;
         ArrayList<String> wordList = new ArrayList<String>();
         try {
             openDataBase();
@@ -80,16 +98,21 @@ public class Utildatabase extends SQLiteOpenHelper {
         // String query = "SELECT dream_name FROM miller  UNION SELECT dream_name FROM meneghetti UNION SELECT dream_name FROM vanga UNION SELECT dream_name FROM freid UNION SELECT dream_name FROM solomon UNION SELECT dream_name FROM tsvetkov UNION SELECT dream_name FROM nostradamus UNION SELECT dream_name FROM hasse UNION SELECT dream_name FROM azar UNION SELECT dream_name FROM krada_velez UNION SELECT dream_name FROM kopalinski UNION SELECT dream_name FROM zhou_goun UNION SELECT dream_name FROM yuri_long UNION SELECT dream_name FROM english UNION SELECT dream_name FROM assyrian UNION SELECT dream_name FROM old_russian UNION SELECT dream_name FROM indian UNION SELECT dream_name FROM culinary UNION SELECT dream_name FROM lof UNION SELECT dream_name FROM love UNION SELECT dream_name FROM muslim UNION SELECT dream_name FROM persian UNION SELECT dream_name FROM slavic UNION SELECT dream_name FROM ukraine UNION SELECT dream_name FROM french UNION SELECT dream_name FROM esoteric UNION SELECT dream_name FROM electronic UNION SELECT dream_name FROM right";
         String query = "";
         for (int i = 0; i < tables.length; i++) {
-            query += "SELECT dream_name FROM " + tables[i] + " where dream_name Like \"" + s + "%\"";
-            if (i < tables.length - 1) {
-                query += " UNION ";
+            if (tablesSearch.get(tables[i])) {
+                count++;
+                query += "SELECT dream_name FROM " + tables[i] + " where dream_name Like \"" + s + "%\"";
+                if (count > 2 && i < tables.length - 1) {
+                    query += " UNION ";
+                }
+
             }
+
 
         }
         Cursor cursor = myDataBase.rawQuery(query, null);
         if (cursor != null)
             cursor.moveToFirst();
-        if (cursor.getCount()>0){
+        if (cursor.getCount() > 0) {
             do {
                 wordList.add(cursor.getString(0));
             }
@@ -110,7 +133,7 @@ public class Utildatabase extends SQLiteOpenHelper {
         if (checkDataBase()) {
             try {
                 onUnzipZip();
-                Log.d(TAG,"database unziped");
+                Log.d(TAG, "database unziped");
             } catch (IOException e) {
                 e.printStackTrace();
             }
