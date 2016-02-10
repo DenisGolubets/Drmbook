@@ -2,6 +2,7 @@ package com.denisgolubets.dreambook.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
@@ -86,8 +87,8 @@ public class Utildatabase extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<String> resultWords(String s, HashMap<String, Boolean> tablesSearch) {
-        int count =0;
+    public ArrayList<String> resultWords(String s, HashMap<String, Boolean> tablesSearch) throws Exception {
+        int count = 0;
         ArrayList<String> wordList = new ArrayList<String>();
         try {
             openDataBase();
@@ -95,23 +96,23 @@ public class Utildatabase extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        // String query = "SELECT dream_name FROM miller  UNION SELECT dream_name FROM meneghetti UNION SELECT dream_name FROM vanga UNION SELECT dream_name FROM freid UNION SELECT dream_name FROM solomon UNION SELECT dream_name FROM tsvetkov UNION SELECT dream_name FROM nostradamus UNION SELECT dream_name FROM hasse UNION SELECT dream_name FROM azar UNION SELECT dream_name FROM krada_velez UNION SELECT dream_name FROM kopalinski UNION SELECT dream_name FROM zhou_goun UNION SELECT dream_name FROM yuri_long UNION SELECT dream_name FROM english UNION SELECT dream_name FROM assyrian UNION SELECT dream_name FROM old_russian UNION SELECT dream_name FROM indian UNION SELECT dream_name FROM culinary UNION SELECT dream_name FROM lof UNION SELECT dream_name FROM love UNION SELECT dream_name FROM muslim UNION SELECT dream_name FROM persian UNION SELECT dream_name FROM slavic UNION SELECT dream_name FROM ukraine UNION SELECT dream_name FROM french UNION SELECT dream_name FROM esoteric UNION SELECT dream_name FROM electronic UNION SELECT dream_name FROM right";
         String query = "";
+
         for (int i = 0; i < tables.length; i++) {
             if (tablesSearch.get(tables[i])) {
-                count++;
+                query += (count > 0 && i < tables.length ) ? " UNION " : "";
                 query += "SELECT dream_name FROM " + tables[i] + " where dream_name Like \"" + s + "%\"";
-                if (count > 2 && i < tables.length - 1) {
-                    query += " UNION ";
-                }
+                count++;
+
+
+
 
             }
 
 
         }
         Cursor cursor = myDataBase.rawQuery(query, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        if (cursor != null) cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             do {
                 wordList.add(cursor.getString(0));
@@ -240,8 +241,8 @@ public class Utildatabase extends SQLiteOpenHelper {
     public void onUnzipZip() throws IOException {
         InputStream is = myContext.getAssets().open("data.zip");
         File db_path = myContext.getDatabasePath(DB_PATH + DATABASE_NAME);
-        if (!db_path.exists())
-            db_path.getParentFile().mkdirs();
+        if (!db_path.exists()) db_path.getParentFile().mkdirs();
+
         OutputStream os = new FileOutputStream(db_path);
         ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
         ZipEntry ze;

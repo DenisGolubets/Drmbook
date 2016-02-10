@@ -37,15 +37,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener, TextWatcher, View.OnClickListener {
-    private static final String MY_SETTINGS = "drm_preferences";
+    //private static final String MY_PREFERENCES = "";
     private Utildatabase sqlHelper;
     private ListView lv;
-    private EditText etname;
     private ArrayList<String> words;
     private SimpleCursorAdapter adapter;
     private Cursor cursor;
     private Button btnSerch, btnClear;
-    private Button Clear;
     private LinearLayout mLinearLayout;
 
     private HomeListAdapter HomeListAdapter;
@@ -77,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loadPreferences();
 
         edit = (AutoCompleteTextView) findViewById(R.id.edit);
         edit.setOnEditorActionListener(this);
@@ -216,18 +215,18 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
                             homeItem.setHomeItemName(cursor.getString(1));
                             homeItem.setHomeItemDescription(cursor.getString(2));
                             HomeItemList.add(homeItem);
-                            if (cursor.getCount()>1){
+                            if (cursor.getCount() > 1) {
                                 cursor.moveToNext();
                             }
 
                         }
                         HomeListAdapter = new HomeListAdapter(getApplicationContext(), 0, HomeItemList);
                         //if (HomeListAdapter != null)
-                            sadapter.addSection(headers[i], HomeListAdapter);
+                        sadapter.addSection(headers[i], HomeListAdapter);
 
                     }
                 }
-                cursor=null;
+                cursor = null;
             }
             if (sadapter.getCount() == 0) {
                 Toast.makeText(this, "По вашему запросу ничего не найдено", Toast.LENGTH_SHORT).show();
@@ -294,7 +293,11 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         if (edit.getText().length() > 0) {
 
             editString = setTextToUpperCase();
-            words = sqlHelper.resultWords(editString, tablesSearch);
+            try {
+                words = sqlHelper.resultWords(editString, tablesSearch);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             edit.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, words));
 
         }
@@ -366,31 +369,6 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         edit.clearFocus();
         mLinearLayout.requestFocus();
     }
-
-    private void searchClick_OLD() {
-        if (edit.getText().length() > 0) {
-            String editString = edit.getText().toString();
-            if (editString.length() == 1) {
-                editString.toUpperCase();
-            } else {
-                editString = Character.toString(editString.charAt(0)).toUpperCase() + editString.substring(1);
-            }
-            try {
-
-                cursor = sqlHelper.firstQuery(editString);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String i = String.valueOf(cursor.getCount());
-            Toast.makeText(this, i, Toast.LENGTH_SHORT).show();
-            //setListCursorAdapter();
-            setListWithHeader();
-        }
-        hideKeyboard();
-        edit.clearFocus();
-        mLinearLayout.requestFocus();
-    }
-
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
